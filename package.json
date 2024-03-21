@@ -10,7 +10,9 @@
   "author": "Martin Ntuwa",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "express": "^4.19.1",
+    "mongoose": "^8.2.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
