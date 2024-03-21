@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
+const { token } = require('morgan')
 
 router.post('/signup', (req, res, next) => {
   User.find({ email: req.body.email })
@@ -35,6 +37,46 @@ router.post('/signup', (req, res, next) => {
                 res.status(500).json({ error: err })
               })
           }
+        })
+      }
+    })
+})
+
+router.post('/login', (req, res, next) => {
+  User.find({ email: req.body.email })
+    .exec()
+    .then(user => {
+      if (user.length >= 1) {
+        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+          if (err) {
+            return res.status(500).json({ error: err })
+          } else {
+            if (result) {
+              // create jwt token
+              const token = jwt.sign(
+                {
+                  userId: user[0]._id,
+                  email: user[0].email,
+                },
+                'secretkey',
+                {
+                  expiresIn: 60 * 60 * 24,
+                }
+              )
+              res.status(200).json({
+                message: 'User logged in successfully',
+                token: token,
+              })
+            } else {
+              res.status(401).json({
+                message: 'Invalid credentials',
+              })
+            }
+          }
+        })
+      } else {
+        res.status(401).json({
+          message: 'Invalid credentials',
         })
       }
     })
