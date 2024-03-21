@@ -13,6 +13,7 @@ router.post('/', (req, res, next) => {
   })
 })
 
+// Get Request
 router.get('/:orderId', (req, res, next) => {
   const id = req.params.orderId
   if (id === 'special') {
