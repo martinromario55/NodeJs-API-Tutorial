@@ -9,7 +9,7 @@ const orderRoutes = require('./api/routes/orders')
 const userRoutes = require('./api/routes/user')
 
 // mongoose
-mongoose.connect(``)
+mongoose.connect(`${process.env.MONGODB_TOKEN}`)
 
 // Handle logging
 app.use(morgan('dev'))
