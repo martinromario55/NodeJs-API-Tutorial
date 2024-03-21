@@ -6,12 +6,16 @@ const mongoose = require('mongoose')
 
 const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
+const userRoutes = require('./api/routes/user')
 
 // mongoose
 mongoose.connect(``)
 
 // Handle logging
 app.use(morgan('dev'))
+
+// make files publicly available
+app.use('/uploads', express.static('uploads'))
 
 // Adding Headers
 app.use((req, res, next) => {
@@ -37,6 +41,7 @@ app.use(bodyParser.json())
 // Routes
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)
+app.use('/user', userRoutes)
 
 // Handle Errors
 app.use((req, res, next) => {
